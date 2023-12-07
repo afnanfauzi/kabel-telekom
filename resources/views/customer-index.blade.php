@@ -42,6 +42,7 @@
                     <th>Email</th>
                     <th>IP Address</th>
                     <th>Status</th>
+                    <th>Created at</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -63,6 +64,7 @@
                     @elseif($data->status == "SUSPEND")
                     <td> <span class="badge badge-danger">SUSPEND</span></td>
                     @endif
+                    <td>{{ $data->created_at }}</td>
                     <td>
                         <form onsubmit="return confirm('Delete this data ?');" action="{{ route('customer.destroy', $data->id) }}" method="post" style="display:inline;">
                             <a href="{{ route('customer.edit', $data->id) }}" class="btn btn-info btn-sm">Edit</a>

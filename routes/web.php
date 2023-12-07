@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
+Route::get('/isogram/{str}', [CustomerController::class, 'isogram']);
+
 Route::get('/', function () {
     return Redirect::to('/customer');
 });

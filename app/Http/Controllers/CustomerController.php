@@ -17,9 +17,13 @@ class CustomerController extends Controller
     {
         $search = $request->input('search');
 
-        $customer = DB::table('interview')->select('id', 'full_name', 'phone_number', 'email', 'ip_address', 'status')->when($search, function ($cust, $search) {
+        // $customer = DB::table('interview')->select('id', 'full_name', 'phone_number', 'email', 'ip_address', 'status', 'created_at')->when($search, function ($cust, $search) {
+        //     $cust = $cust->where('full_name', 'like', '%' . $search . '%');
+        // })->whereNull('ip_address')->latest()->paginate(50)->appends(['search' => $search]);
+
+        $customer = DB::table('interview')->select('id', 'full_name', 'phone_number', 'email', 'ip_address', 'status', 'created_at')->when($search, function ($cust, $search) {
             $cust = $cust->where('full_name', 'like', '%' . $search . '%');
-        })->latest()->paginate(50)->appends(['search' => $search]);
+        })->where('status', '=', 'ACTIVE')->whereMonth('created_at', '8')->latest()->paginate(50)->appends(['search' => $search]);
 
         return view('customer-index', compact('customer'));
     }
@@ -124,5 +128,24 @@ class CustomerController extends Controller
         Customer::find($id)->delete();
 
         return redirect()->route('customer.index')->with('success', 'Data deleted successfully');
+    }
+
+    public function isogram($str)
+    {
+        // $str = "arGSg";
+        $conv = strtolower($str);
+        $chars = str_split($conv);
+        $arr = [];
+
+        foreach ($chars as $char) {
+            array_push($arr, $char);
+        }
+
+        $uniqArr = array_unique($arr);
+        if (count($uniqArr) === count($arr)) {
+            dd(true);
+        } else {
+            dd(false);
+        }
     }
 }
